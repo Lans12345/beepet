@@ -1,4 +1,5 @@
 import 'package:beepet/screens/auth/signup_screen.dart';
+import 'package:beepet/screens/home_screen.dart';
 import 'package:beepet/utils/colors.dart';
 import 'package:beepet/widgets/button_widget.dart';
 import 'package:beepet/widgets/text_widget.dart';
@@ -65,7 +66,10 @@ class LoginScreen extends StatelessWidget {
                       radius: 100,
                       color: solid,
                       label: 'Login',
-                      onPressed: () {})),
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => const HomeScreen()));
+                      })),
               const SizedBox(
                 height: 20,
               ),
