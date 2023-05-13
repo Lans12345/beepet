@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "654053261771",
+    "project_id": "beepet-59048",
+    "storage_bucket": "beepet-59048.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:654053261771:android:122d94adf4d3a5760b364e",
+        "android_client_info": {
+          "package_name": "com.example.beepet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "654053261771-c7spf5b4m5q2pra3d8hkvachr18goj14.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCjqLGYj5NAH4VXCew3KkPkfosq13AhWk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "654053261771-c7spf5b4m5q2pra3d8hkvachr18goj14.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
