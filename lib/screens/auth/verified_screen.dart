@@ -1,4 +1,4 @@
-import 'package:beepet/screens/home_screen.dart';
+import 'package:beepet/screens/auth/login_screen.dart';
 import 'package:beepet/widgets/button_widget.dart';
 import 'package:beepet/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +54,7 @@ class VerifiedScreen extends StatelessWidget {
                       onPressed: () {
                         showToast('Account created succesfully!');
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => const HomeScreen()));
+                            builder: (context) => LoginScreen()));
                       })),
             ],
           ),

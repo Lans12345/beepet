@@ -4,6 +4,7 @@ import 'package:beepet/widgets/button_widget.dart';
 import 'package:beepet/widgets/text_widget.dart';
 import 'package:beepet/widgets/textfield_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 class SignupScreen extends StatelessWidget {
   final usernameController = TextEditingController();
@@ -11,6 +12,8 @@ class SignupScreen extends StatelessWidget {
   final phoneController = TextEditingController();
 
   SignupScreen({super.key});
+
+  final box = GetStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +80,9 @@ class SignupScreen extends StatelessWidget {
                       color: Colors.grey),
                   TextButton(
                     onPressed: () {
+                      box.write('username', usernameController.text);
+                      box.write('password', passwordController.text);
+                      box.write('contactNumber', phoneController.text);
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (context) => LoginScreen()));
                     },
