@@ -19,7 +19,7 @@ class TextFieldWidget extends StatelessWidget {
       required this.controller,
       this.isObscure = false,
       this.width = 300,
-      this.height = 40,
+      this.height = 45,
       this.maxLine = 1,
       this.inputType = TextInputType.text});
 
@@ -28,21 +28,25 @@ class TextFieldWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextRegular(text: label, fontSize: 12, color: Colors.black),
+        TextRegular(text: label, fontSize: 14, color: Colors.white),
         const SizedBox(
           height: 5,
         ),
         Container(
           height: height,
           width: width,
-          decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.black,
-              ),
-              borderRadius: BorderRadius.circular(5)),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(100)),
           child: TextFormField(
             keyboardType: inputType,
             decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(100),
+                  borderSide: const BorderSide(color: Colors.white)),
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(100),
+                  borderSide: const BorderSide(color: Colors.grey)),
+              filled: true,
+              fillColor: Colors.white,
               hintText: hint,
               border: InputBorder.none,
             ),
