@@ -1,3 +1,4 @@
+import 'package:beepet/screens/auth/login_screen.dart';
 import 'package:beepet/utils/colors.dart';
 import 'package:beepet/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,10 @@ class LandingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: GestureDetector(
-        onTap: () {},
+        onTap: () {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const LoginScreen()));
+        },
         child: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
