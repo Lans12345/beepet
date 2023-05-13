@@ -1,16 +1,15 @@
-import 'package:beepet/screens/auth/login_screen.dart';
-import 'package:beepet/screens/auth/otp_screen.dart';
+import 'package:beepet/screens/auth/verified_screen.dart';
 import 'package:beepet/widgets/button_widget.dart';
 import 'package:beepet/widgets/text_widget.dart';
 import 'package:beepet/widgets/textfield_widget.dart';
 import 'package:flutter/material.dart';
 
-class SignupScreen extends StatelessWidget {
+class OTPScreen extends StatelessWidget {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final phoneController = TextEditingController();
 
-  SignupScreen({super.key});
+  OTPScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,24 +34,20 @@ class SignupScreen extends StatelessWidget {
                   fontSize: 36,
                   color: Colors.grey),
               const SizedBox(
+                height: 50,
+              ),
+              Center(
+                child: TextBold(
+                    text: 'An OTP has been sent\n      to your number',
+                    fontSize: 18,
+                    color: Colors.grey),
+              ),
+              const SizedBox(
                 height: 30,
               ),
               Center(
                   child: TextFieldWidget(
-                      label: 'Username', controller: usernameController)),
-              const SizedBox(
-                height: 20,
-              ),
-              Center(
-                child: TextFieldWidget(
-                    label: 'Password', controller: passwordController),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Center(
-                  child: TextFieldWidget(
-                      label: 'Phone Number', controller: phoneController)),
+                      label: 'Enter OTP', controller: usernameController)),
               const SizedBox(
                 height: 30,
               ),
@@ -60,31 +55,11 @@ class SignupScreen extends StatelessWidget {
                   child: ButtonWidget(
                       radius: 100,
                       color: Colors.teal[600]!.withOpacity(0.5),
-                      label: 'Signup',
+                      label: 'Continue',
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => OTPScreen()));
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => VerifiedScreen()));
                       })),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextRegular(
-                      text: 'Already had an account?',
-                      fontSize: 12,
-                      color: Colors.grey),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => LoginScreen()));
-                    },
-                    child: TextBold(
-                        text: 'Login', fontSize: 14, color: Colors.black),
-                  ),
-                ],
-              ),
             ],
           ),
         ),

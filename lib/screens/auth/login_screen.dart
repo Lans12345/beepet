@@ -1,3 +1,4 @@
+import 'package:beepet/screens/auth/signup_screen.dart';
 import 'package:beepet/utils/colors.dart';
 import 'package:beepet/widgets/button_widget.dart';
 import 'package:beepet/widgets/text_widget.dart';
@@ -102,7 +103,10 @@ class LoginScreen extends StatelessWidget {
                       radius: 100,
                       color: secondarySolid.withOpacity(0.5),
                       label: 'Signup',
-                      onPressed: () {})),
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => SignupScreen()));
+                      })),
             ],
           ),
         ),
