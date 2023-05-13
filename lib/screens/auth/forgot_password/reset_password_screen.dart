@@ -1,15 +1,17 @@
-import 'package:beepet/screens/auth/forgot_password/forgot_password_screen_2.dart';
+import 'package:beepet/screens/auth/login_screen.dart';
 import 'package:beepet/utils/colors.dart';
 import 'package:beepet/widgets/text_widget.dart';
+import 'package:beepet/widgets/toast_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../../widgets/button_widget.dart';
 import '../../../widgets/textfield_widget.dart';
 
-class ForgotPasswordScreen extends StatelessWidget {
-  final numberController = TextEditingController();
+class ResetPasswordScreen extends StatelessWidget {
+  final passwordController = TextEditingController();
+  final confirmpasswordController = TextEditingController();
 
-  ForgotPasswordScreen({super.key});
+  ResetPasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -59,16 +61,23 @@ class ForgotPasswordScreen extends StatelessWidget {
             const SizedBox(
               height: 80,
             ),
-            TextBold(
-                text: 'Forgot Password', fontSize: 24, color: Colors.black),
+            TextBold(text: 'Reset Password', fontSize: 24, color: Colors.black),
             const SizedBox(
               height: 50,
             ),
             Center(
                 child: TextFieldWidget(
                     labelColor: Colors.black,
-                    label: 'Enter Contact Number',
-                    controller: numberController)),
+                    label: 'Enter Password',
+                    controller: passwordController)),
+            const SizedBox(
+              height: 20,
+            ),
+            Center(
+                child: TextFieldWidget(
+                    labelColor: Colors.black,
+                    label: 'Confirm Password',
+                    controller: confirmpasswordController)),
             const SizedBox(
               height: 30,
             ),
@@ -76,10 +85,11 @@ class ForgotPasswordScreen extends StatelessWidget {
                 child: ButtonWidget(
                     radius: 100,
                     color: Colors.teal[600]!.withOpacity(0.5),
-                    label: 'Forgot Password',
+                    label: 'Reset Password',
                     onPressed: () {
+                      showToast('Password resetted succesfully!');
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ForgotPasswordScreen2()));
+                          builder: (context) => LoginScreen()));
                     })),
           ],
         ),

@@ -5,9 +5,7 @@ import 'package:beepet/widgets/textfield_widget.dart';
 import 'package:flutter/material.dart';
 
 class OTPScreen extends StatelessWidget {
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
-  final phoneController = TextEditingController();
+  final otpController = TextEditingController();
 
   OTPScreen({super.key});
 
@@ -47,7 +45,7 @@ class OTPScreen extends StatelessWidget {
               ),
               Center(
                   child: TextFieldWidget(
-                      label: 'Enter OTP', controller: usernameController)),
+                      label: 'Enter OTP', controller: otpController)),
               const SizedBox(
                 height: 30,
               ),

@@ -4,6 +4,7 @@ import 'package:beepet/widgets/home_cards_widget.dart';
 import 'package:beepet/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/toast_widget.dart';
 import 'auth/login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -110,6 +111,8 @@ class HomeScreen extends StatelessWidget {
                                         ),
                                         MaterialButton(
                                           onPressed: () async {
+                                            showToast(
+                                                'Logged out succesfully!');
                                             Navigator.of(context)
                                                 .pushReplacement(
                                                     MaterialPageRoute(

@@ -1,3 +1,4 @@
+import 'package:beepet/screens/auth/forgot_password/forgot_password_screen.dart';
 import 'package:beepet/screens/auth/signup_screen.dart';
 import 'package:beepet/screens/home_screen.dart';
 import 'package:beepet/utils/colors.dart';
@@ -5,6 +6,8 @@ import 'package:beepet/widgets/button_widget.dart';
 import 'package:beepet/widgets/text_widget.dart';
 import 'package:beepet/widgets/textfield_widget.dart';
 import 'package:flutter/material.dart';
+
+import '../../widgets/toast_widget.dart';
 
 class LoginScreen extends StatelessWidget {
   final usernameController = TextEditingController();
@@ -50,7 +53,10 @@ class LoginScreen extends StatelessWidget {
                   TextFieldWidget(
                       label: 'Password', controller: passwordController),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ForgotPasswordScreen()));
+                    },
                     child: TextBold(
                         text: 'Forgot Password?',
                         fontSize: 12,
@@ -67,6 +73,7 @@ class LoginScreen extends StatelessWidget {
                       color: solid,
                       label: 'Login',
                       onPressed: () {
+                        showToast('Logged in succesfully!');
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => const HomeScreen()));
                       })),

@@ -3,6 +3,8 @@ import 'package:beepet/widgets/button_widget.dart';
 import 'package:beepet/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
+import '../../widgets/toast_widget.dart';
+
 class VerifiedScreen extends StatelessWidget {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
@@ -50,6 +52,7 @@ class VerifiedScreen extends StatelessWidget {
                       color: Colors.teal[600]!.withOpacity(0.5),
                       label: 'Continue',
                       onPressed: () {
+                        showToast('Account created succesfully!');
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: (context) => const HomeScreen()));
                       })),

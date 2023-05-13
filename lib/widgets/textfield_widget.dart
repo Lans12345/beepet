@@ -11,6 +11,7 @@ class TextFieldWidget extends StatelessWidget {
   final double? height;
   final int? maxLine;
   final TextInputType? inputType;
+  final Color? labelColor;
 
   const TextFieldWidget(
       {super.key,
@@ -21,14 +22,15 @@ class TextFieldWidget extends StatelessWidget {
       this.width = 300,
       this.height = 45,
       this.maxLine = 1,
-      this.inputType = TextInputType.text});
+      this.inputType = TextInputType.text,
+      this.labelColor = Colors.white});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextRegular(text: label, fontSize: 14, color: Colors.white),
+        TextRegular(text: label, fontSize: 14, color: labelColor!),
         const SizedBox(
           height: 5,
         ),
