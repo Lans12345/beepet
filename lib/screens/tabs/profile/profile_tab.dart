@@ -1,3 +1,4 @@
+import 'package:beepet/screens/tabs/profile/edit_profile_tab.dart';
 import 'package:beepet/utils/colors.dart';
 import 'package:beepet/widgets/button_widget.dart';
 import 'package:beepet/widgets/text_widget.dart';
@@ -128,7 +129,10 @@ class ProfileTab extends StatelessWidget {
                       height: 35,
                       color: Colors.white,
                       label: 'EDIT',
-                      onPressed: () {}),
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => EditProfileTab()));
+                      }),
                 ),
               ),
               const Expanded(child: SizedBox()),

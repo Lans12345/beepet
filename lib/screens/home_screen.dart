@@ -1,4 +1,4 @@
-import 'package:beepet/screens/tabs/profile_tab.dart';
+import 'package:beepet/screens/tabs/profile/profile_tab.dart';
 import 'package:beepet/utils/colors.dart';
 import 'package:beepet/widgets/button_widget.dart';
 import 'package:beepet/widgets/home_cards_widget.dart';
