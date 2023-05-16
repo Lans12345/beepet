@@ -1,3 +1,4 @@
+import 'package:beepet/screens/tabs/notif_tab.dart';
 import 'package:beepet/screens/tabs/profile/profile_tab.dart';
 import 'package:beepet/utils/colors.dart';
 import 'package:beepet/widgets/button_widget.dart';
@@ -73,7 +74,10 @@ class HomeScreen extends StatelessWidget {
                           icon: Icons.qr_code_scanner_rounded,
                           title: 'Scan QR Code'),
                       HomeCardWidget(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const NotifTab()));
+                          },
                           icon: Icons.notifications,
                           title: 'Notifications'),
                       HomeCardWidget(
