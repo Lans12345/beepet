@@ -1,3 +1,4 @@
+import 'package:beepet/screens/tabs/profile_tab.dart';
 import 'package:beepet/utils/colors.dart';
 import 'package:beepet/widgets/button_widget.dart';
 import 'package:beepet/widgets/home_cards_widget.dart';
@@ -59,15 +60,28 @@ class HomeScreen extends StatelessWidget {
                         height: 100,
                       ),
                       HomeCardWidget(
-                          icon: Icons.account_circle, title: 'Profile'),
-                      HomeCardWidget(icon: Icons.pets, title: 'My Pets'),
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const ProfileTab()));
+                          },
+                          icon: Icons.account_circle,
+                          title: 'Profile'),
                       HomeCardWidget(
+                          onPressed: () {}, icon: Icons.pets, title: 'My Pets'),
+                      HomeCardWidget(
+                          onPressed: () {},
                           icon: Icons.qr_code_scanner_rounded,
                           title: 'Scan QR Code'),
                       HomeCardWidget(
-                          icon: Icons.notifications, title: 'Notifications'),
-                      HomeCardWidget(icon: Icons.forum, title: 'Pet Community'),
+                          onPressed: () {},
+                          icon: Icons.notifications,
+                          title: 'Notifications'),
                       HomeCardWidget(
+                          onPressed: () {},
+                          icon: Icons.forum,
+                          title: 'Pet Community'),
+                      HomeCardWidget(
+                          onPressed: () {},
                           icon: Icons.medical_services,
                           title: 'Pet Medical Record'),
                     ],
