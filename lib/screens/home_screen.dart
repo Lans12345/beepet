@@ -1,3 +1,4 @@
+import 'package:beepet/screens/tabs/my_pets/my_pets_tab.dart';
 import 'package:beepet/screens/tabs/notif_tab.dart';
 import 'package:beepet/screens/tabs/profile/profile_tab.dart';
 import 'package:beepet/utils/colors.dart';
@@ -68,7 +69,12 @@ class HomeScreen extends StatelessWidget {
                           icon: Icons.account_circle,
                           title: 'Profile'),
                       HomeCardWidget(
-                          onPressed: () {}, icon: Icons.pets, title: 'My Pets'),
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const MyPetsTab()));
+                          },
+                          icon: Icons.pets,
+                          title: 'My Pets'),
                       HomeCardWidget(
                           onPressed: () {},
                           icon: Icons.qr_code_scanner_rounded,
