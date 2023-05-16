@@ -101,6 +101,11 @@ class MyPetsTab extends StatelessWidget {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: solid,
+        onPressed: () {},
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
