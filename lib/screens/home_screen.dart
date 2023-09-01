@@ -1,6 +1,7 @@
 import 'package:beepet/screens/tabs/my_pets/my_pets_tab.dart';
 import 'package:beepet/screens/tabs/notif_tab.dart';
 import 'package:beepet/screens/tabs/pet_community_tab.dart';
+import 'package:beepet/screens/tabs/pet_record/main_screen.dart';
 import 'package:beepet/screens/tabs/profile/profile_tab.dart';
 import 'package:beepet/utils/colors.dart';
 import 'package:beepet/widgets/button_widget.dart';
@@ -95,7 +96,11 @@ class HomeScreen extends StatelessWidget {
                           icon: Icons.forum,
                           title: 'Pet Community'),
                       HomeCardWidget(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    const MainPetRecordTab()));
+                          },
                           icon: Icons.medical_services,
                           title: 'Pet Medical Record'),
                     ],
