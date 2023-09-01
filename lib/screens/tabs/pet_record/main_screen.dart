@@ -1,4 +1,4 @@
-import 'package:beepet/screens/tabs/my_pets/pet_profile_tab.dart';
+import 'package:beepet/screens/tabs/pet_record/record_tab.dart';
 import 'package:beepet/utils/colors.dart';
 import 'package:beepet/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +68,7 @@ class MainPetRecordTab extends StatelessWidget {
                         child: ListTile(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const PetProfileTab()));
+                                builder: (context) => const PetRecordTab()));
                           },
                           leading: const CircleAvatar(
                             minRadius: 35,
