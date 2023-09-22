@@ -11,6 +11,7 @@ class SignupScreen extends StatelessWidget {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final phoneController = TextEditingController();
+  final addressController = TextEditingController();
 
   SignupScreen({super.key});
 
@@ -59,6 +60,12 @@ class SignupScreen extends StatelessWidget {
                     child: TextFieldWidget(
                         label: 'Phone Number', controller: phoneController)),
                 const SizedBox(
+                  height: 20,
+                ),
+                Center(
+                    child: TextFieldWidget(
+                        label: 'Address', controller: addressController)),
+                const SizedBox(
                   height: 30,
                 ),
                 Center(
@@ -70,8 +77,8 @@ class SignupScreen extends StatelessWidget {
                           box.write('username', usernameController.text);
                           box.write('password', passwordController.text);
                           box.write('contactNumber', phoneController.text);
-                          addUser(
-                              usernameController.text, phoneController.text);
+                          addUser(usernameController.text, phoneController.text,
+                              addressController.text);
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => OTPScreen()));
                         })),
