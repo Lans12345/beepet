@@ -55,7 +55,10 @@ class LoginScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     TextFieldWidget(
-                        label: 'Password', controller: passwordController),
+                      label: 'Password',
+                      controller: passwordController,
+                      isObscure: true,
+                    ),
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
@@ -80,6 +83,8 @@ class LoginScreen extends StatelessWidget {
                           if (usernameController.text == box.read('username') &&
                               passwordController.text == box.read('password')) {
                             showToast('Logged in succesfully!');
+                            box.write('username', box.read('username'));
+                            box.write('password', box.read('password'));
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                     builder: (context) => const HomeScreen()));

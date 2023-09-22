@@ -4,12 +4,24 @@ import 'package:beepet/widgets/text_widget.dart';
 import 'package:beepet/widgets/textfield_widget.dart';
 import 'package:flutter/material.dart';
 
-class EditProfileTab extends StatelessWidget {
-  final nameController = TextEditingController();
-  final contactController = TextEditingController();
-  final addressController = TextEditingController();
+class EditProfileTab extends StatefulWidget {
+  String? id;
 
-  EditProfileTab({super.key});
+  EditProfileTab({
+    super.key,
+    required this.id,
+  });
+
+  @override
+  State<EditProfileTab> createState() => _EditProfileTabState();
+}
+
+class _EditProfileTabState extends State<EditProfileTab> {
+  final nameController = TextEditingController();
+
+  final contactController = TextEditingController();
+
+  final addressController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +124,7 @@ class EditProfileTab extends StatelessWidget {
                                       });
                                 },
                                 icon: const Icon(
-                                  Icons.camera_alt_outlined,
+                                  Icons.account_circle_outlined,
                                   size: 32,
                                 ),
                               ),
