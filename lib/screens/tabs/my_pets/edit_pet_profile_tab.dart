@@ -2,6 +2,8 @@ import 'package:beepet/utils/colors.dart';
 import 'package:beepet/widgets/button_widget.dart';
 import 'package:beepet/widgets/text_widget.dart';
 import 'package:beepet/widgets/textfield_widget.dart';
+import 'package:beepet/widgets/toast_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class EditPetProfileTab extends StatefulWidget {
@@ -177,7 +179,19 @@ class _EditPetProfileTabState extends State<EditPetProfileTab> {
                       height: 35,
                       color: Colors.white,
                       label: 'SAVE',
-                      onPressed: () {}),
+                      onPressed: () async {
+                        await FirebaseFirestore.instance
+                            .collection('Pets')
+                            .doc(widget.id)
+                            .update({
+                          'name': nameController.text,
+                          'breed': breedController.text,
+                          'gender': genderController.text,
+                          'birthday': bdayController.text
+                        });
+                        Navigator.pop(context);
+                        showToast('Pet profile updated succesfully!');
+                      }),
                 ),
               ),
               const Expanded(child: SizedBox()),
