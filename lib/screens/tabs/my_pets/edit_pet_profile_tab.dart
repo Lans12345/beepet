@@ -4,13 +4,23 @@ import 'package:beepet/widgets/text_widget.dart';
 import 'package:beepet/widgets/textfield_widget.dart';
 import 'package:flutter/material.dart';
 
-class EditPetProfileTab extends StatelessWidget {
-  final nameController = TextEditingController();
-  final breedController = TextEditingController();
-  final genderController = TextEditingController();
-  final bdayController = TextEditingController();
+class EditPetProfileTab extends StatefulWidget {
+  String id;
 
-  EditPetProfileTab({super.key});
+  EditPetProfileTab({super.key, required this.id});
+
+  @override
+  State<EditPetProfileTab> createState() => _EditPetProfileTabState();
+}
+
+class _EditPetProfileTabState extends State<EditPetProfileTab> {
+  final nameController = TextEditingController();
+
+  final breedController = TextEditingController();
+
+  final genderController = TextEditingController();
+
+  final bdayController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

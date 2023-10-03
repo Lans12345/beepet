@@ -2,6 +2,8 @@ import 'package:beepet/utils/colors.dart';
 import 'package:beepet/widgets/button_widget.dart';
 import 'package:beepet/widgets/text_widget.dart';
 import 'package:beepet/widgets/textfield_widget.dart';
+import 'package:beepet/widgets/toast_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class EditProfileTab extends StatefulWidget {
@@ -171,7 +173,18 @@ class _EditProfileTabState extends State<EditProfileTab> {
                       height: 35,
                       color: Colors.white,
                       label: 'SAVE',
-                      onPressed: () {}),
+                      onPressed: () async {
+                        await FirebaseFirestore.instance
+                            .collection('Users')
+                            .doc(widget.id)
+                            .update({
+                          'username': nameController.text,
+                          'contactNumber': contactController.text,
+                          'address': addressController.text
+                        });
+                        Navigator.pop(context);
+                        showToast('Profile updated succesfully!');
+                      }),
                 ),
               ),
               const Expanded(child: SizedBox()),

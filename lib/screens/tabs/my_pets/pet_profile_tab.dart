@@ -149,7 +149,9 @@ class _PetProfileTabState extends State<PetProfileTab> {
                       label: 'EDIT',
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => EditPetProfileTab()));
+                            builder: (context) => EditPetProfileTab(
+                                  id: widget.data.id,
+                                )));
                       }),
                 ),
               ),

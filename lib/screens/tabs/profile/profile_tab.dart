@@ -51,7 +51,6 @@ class _ProfileTabState extends State<ProfileTab> {
 
                 final data = snapshot.requireData;
 
-                print(data.docs.length);
                 return Column(
                   children: [
                     Stack(
