@@ -1,3 +1,4 @@
+import 'package:beepet/screens/tabs/my_pets/add_pet_tab.dart';
 import 'package:beepet/screens/tabs/my_pets/pet_profile_tab.dart';
 import 'package:beepet/utils/colors.dart';
 import 'package:beepet/widgets/text_widget.dart';
@@ -103,7 +104,10 @@ class MyPetsTab extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: solid,
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => AddPetProfileTab()));
+        },
         child: const Icon(Icons.add),
       ),
     );
