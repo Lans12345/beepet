@@ -2,11 +2,19 @@ import 'package:beepet/screens/tabs/my_pets/add_pet_tab.dart';
 import 'package:beepet/screens/tabs/my_pets/pet_profile_tab.dart';
 import 'package:beepet/utils/colors.dart';
 import 'package:beepet/widgets/text_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
-class MyPetsTab extends StatelessWidget {
+class MyPetsTab extends StatefulWidget {
   const MyPetsTab({super.key});
 
+  @override
+  State<MyPetsTab> createState() => _MyPetsTabState();
+}
+
+class _MyPetsTabState extends State<MyPetsTab> {
+  final box = GetStorage();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,37 +67,65 @@ class MyPetsTab extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              SizedBox(
-                height: 600,
-                child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                      child: Card(
-                        child: ListTile(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const PetProfileTab()));
-                          },
-                          leading: const CircleAvatar(
-                            minRadius: 35,
-                            maxRadius: 35,
-                            backgroundImage: AssetImage(
-                              'assets/images/pet.png',
+              StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('Pets')
+                      .where('myname', isEqualTo: box.read('username'))
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      print('error');
+                      return const Center(child: Text('Error'));
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Padding(
+                        padding: EdgeInsets.only(top: 50),
+                        child: Center(
+                            child: CircularProgressIndicator(
+                          color: Colors.black,
+                        )),
+                      );
+                    }
+
+                    final data = snapshot.requireData;
+                    return SizedBox(
+                      height: 600,
+                      child: ListView.builder(
+                        itemCount: data.docs.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                            child: Card(
+                              child: ListTile(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => PetProfileTab(
+                                            data: data.docs[index],
+                                          )));
+                                },
+                                leading: const CircleAvatar(
+                                  minRadius: 35,
+                                  maxRadius: 35,
+                                  backgroundImage: AssetImage(
+                                    'assets/images/pet.png',
+                                  ),
+                                ),
+                                title: TextBold(
+                                    text: data.docs[index]['name'],
+                                    fontSize: 14,
+                                    color: Colors.black),
+                                subtitle: TextRegular(
+                                    text: data.docs[index]['breed'],
+                                    fontSize: 12,
+                                    color: Colors.grey),
+                              ),
                             ),
-                          ),
-                          title: TextBold(
-                              text: 'Chewy', fontSize: 14, color: Colors.black),
-                          subtitle: TextRegular(
-                              text: 'Chihuahua',
-                              fontSize: 12,
-                              color: Colors.grey),
-                        ),
+                          );
+                        },
                       ),
                     );
-                  },
-                ),
-              ),
+                  }),
               const Expanded(
                 child: SizedBox(),
               ),

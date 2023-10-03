@@ -1,14 +1,18 @@
+import 'package:beepet/services/add_pet.dart';
 import 'package:beepet/utils/colors.dart';
 import 'package:beepet/widgets/button_widget.dart';
 import 'package:beepet/widgets/text_widget.dart';
 import 'package:beepet/widgets/textfield_widget.dart';
+import 'package:beepet/widgets/toast_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 class AddPetProfileTab extends StatelessWidget {
   final nameController = TextEditingController();
   final breedController = TextEditingController();
   final genderController = TextEditingController();
   final bdayController = TextEditingController();
+  final box = GetStorage();
 
   AddPetProfileTab({super.key});
 
@@ -167,7 +171,16 @@ class AddPetProfileTab extends StatelessWidget {
                       height: 35,
                       color: Colors.white,
                       label: 'ADD PET',
-                      onPressed: () {}),
+                      onPressed: () {
+                        addPet(
+                            nameController.text,
+                            breedController.text,
+                            genderController.text,
+                            bdayController.text,
+                            box.read('username'));
+                        showToast('Pet added!');
+                        Navigator.pop(context);
+                      }),
                 ),
               ),
               const Expanded(child: SizedBox()),

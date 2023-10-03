@@ -41,6 +41,7 @@ dependencies:
   firebase_storage:
   firebase_auth:
   get_storage:
+  intl:
 
 dev_dependencies:
   flutter_test:

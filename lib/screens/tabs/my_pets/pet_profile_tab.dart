@@ -5,9 +5,15 @@ import 'package:beepet/widgets/button_widget.dart';
 import 'package:beepet/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 
-class PetProfileTab extends StatelessWidget {
-  const PetProfileTab({super.key});
+class PetProfileTab extends StatefulWidget {
+  var data;
+  PetProfileTab({super.key, required this.data});
 
+  @override
+  State<PetProfileTab> createState() => _PetProfileTabState();
+}
+
+class _PetProfileTabState extends State<PetProfileTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,22 +99,30 @@ class PetProfileTab extends StatelessWidget {
                               height: 20,
                             ),
                             TextBold(
-                                text: 'Pet name:', fontSize: 14, color: solid),
+                                text: 'Pet name: ${widget.data['name']}',
+                                fontSize: 14,
+                                color: solid),
                             const SizedBox(
                               height: 5,
                             ),
                             TextBold(
-                                text: 'Breed:', fontSize: 14, color: solid),
+                                text: 'Breed: ${widget.data['breed']}',
+                                fontSize: 14,
+                                color: solid),
                             const SizedBox(
                               height: 5,
                             ),
                             TextBold(
-                                text: 'Gender:', fontSize: 14, color: solid),
+                                text: 'Gender: ${widget.data['gender']}',
+                                fontSize: 14,
+                                color: solid),
                             const SizedBox(
                               height: 5,
                             ),
                             TextBold(
-                                text: 'Birthday:', fontSize: 14, color: solid),
+                                text: 'Birthday: ${widget.data['birthday']}',
+                                fontSize: 14,
+                                color: solid),
                             const SizedBox(
                               height: 5,
                             ),
