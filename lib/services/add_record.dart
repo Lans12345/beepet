@@ -1,7 +1,8 @@
 import 'package:beepet/services/add_notif.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-Future addRecord(petname, disease, treatment, medicine, pric, petid) async {
+Future addMedicalRecord(
+    petname, disease, treatment, medicine, pric, petid) async {
   final docUser = FirebaseFirestore.instance.collection('Records').doc();
 
   final json = {

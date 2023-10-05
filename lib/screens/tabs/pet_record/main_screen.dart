@@ -137,11 +137,6 @@ class _MainPetRecordTabState extends State<MainPetRecordTab> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: solid,
-        onPressed: () {},
-        child: const Icon(Icons.add),
-      ),
     );
   }
 }

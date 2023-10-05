@@ -1,10 +1,15 @@
+import 'package:beepet/services/add_record.dart';
 import 'package:beepet/utils/colors.dart';
 import 'package:beepet/widgets/text_widget.dart';
 import 'package:beepet/widgets/textfield_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TableTab extends StatefulWidget {
-  const TableTab({super.key});
+  var data;
+
+  TableTab({super.key, required this.data});
 
   @override
   State<TableTab> createState() => _TableTabState();
@@ -67,86 +72,114 @@ class _TableTabState extends State<TableTab> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(left: 20, right: 20, top: 20),
-                        child: Card(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: DataTable(columns: [
-                              DataColumn(
-                                label: TextBold(
-                                  text: 'Date',
-                                  fontSize: 14,
+                      StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('Records')
+                              .where('petid', isEqualTo: widget.data.id)
+                              .snapshots(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (snapshot.hasError) {
+                              print('error');
+                              return const Center(child: Text('Error'));
+                            }
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Padding(
+                                padding: EdgeInsets.only(top: 50),
+                                child: Center(
+                                    child: CircularProgressIndicator(
                                   color: Colors.black,
+                                )),
+                              );
+                            }
+
+                            final data = snapshot.requireData;
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20, right: 20, top: 20),
+                              child: Card(
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: DataTable(columns: [
+                                    DataColumn(
+                                      label: TextBold(
+                                        text: 'Date',
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    DataColumn(
+                                      label: TextBold(
+                                        text: 'Disease',
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    DataColumn(
+                                      label: TextBold(
+                                        text: 'Treatment',
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    DataColumn(
+                                      label: TextBold(
+                                        text: 'Medicine',
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    DataColumn(
+                                      label: TextBold(
+                                        text: 'Price',
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ], rows: [
+                                    for (int i = 0; i < data.docs.length; i++)
+                                      DataRow(cells: [
+                                        DataCell(
+                                          TextRegular(
+                                              text: DateFormat.yMMMd()
+                                                  .add_jm()
+                                                  .format(data.docs[i]
+                                                          ['dateTime']
+                                                      .toDate()),
+                                              fontSize: 12,
+                                              color: Colors.grey),
+                                        ),
+                                        DataCell(
+                                          TextRegular(
+                                              text: data.docs[i]['disease'],
+                                              fontSize: 12,
+                                              color: Colors.grey),
+                                        ),
+                                        DataCell(
+                                          TextRegular(
+                                              text: data.docs[i]['treatment'],
+                                              fontSize: 12,
+                                              color: Colors.grey),
+                                        ),
+                                        DataCell(
+                                          TextRegular(
+                                              text: data.docs[i]['medicine'],
+                                              fontSize: 12,
+                                              color: Colors.grey),
+                                        ),
+                                        DataCell(
+                                          TextRegular(
+                                              text: data.docs[i]['pric'],
+                                              fontSize: 12,
+                                              color: Colors.grey),
+                                        ),
+                                      ])
+                                  ]),
                                 ),
                               ),
-                              DataColumn(
-                                label: TextBold(
-                                  text: 'Disease',
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              DataColumn(
-                                label: TextBold(
-                                  text: 'Treatment',
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              DataColumn(
-                                label: TextBold(
-                                  text: 'Medicine',
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              DataColumn(
-                                label: TextBold(
-                                  text: 'Price',
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ], rows: [
-                              for (int i = 0; i < 10; i++)
-                                DataRow(cells: [
-                                  DataCell(
-                                    TextRegular(
-                                        text: 'Sample',
-                                        fontSize: 12,
-                                        color: Colors.grey),
-                                  ),
-                                  DataCell(
-                                    TextRegular(
-                                        text: 'Sample',
-                                        fontSize: 12,
-                                        color: Colors.grey),
-                                  ),
-                                  DataCell(
-                                    TextRegular(
-                                        text: 'Sample',
-                                        fontSize: 12,
-                                        color: Colors.grey),
-                                  ),
-                                  DataCell(
-                                    TextRegular(
-                                        text: 'Sample',
-                                        fontSize: 12,
-                                        color: Colors.grey),
-                                  ),
-                                  DataCell(
-                                    TextRegular(
-                                        text: 'Sample',
-                                        fontSize: 12,
-                                        color: Colors.grey),
-                                  ),
-                                ])
-                            ]),
-                          ),
-                        ),
-                      )
+                            );
+                          })
                     ],
                   ),
                 ],
@@ -175,28 +208,31 @@ class _TableTabState extends State<TableTab> {
           backgroundColor: primary,
           title: TextBold(
               text: 'Adding a pet record', fontSize: 18, color: Colors.white),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFieldWidget(label: 'Disease', controller: diseaseController),
-              const SizedBox(
-                height: 10,
-              ),
-              TextFieldWidget(
-                  label: 'Treatment', controller: treatmentController),
-              const SizedBox(
-                height: 10,
-              ),
-              TextFieldWidget(
-                  label: 'Medicine', controller: medicineController),
-              const SizedBox(
-                height: 10,
-              ),
-              TextFieldWidget(
-                  inputType: TextInputType.number,
-                  label: 'Price',
-                  controller: priceController),
-            ],
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFieldWidget(
+                    label: 'Disease', controller: diseaseController),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextFieldWidget(
+                    label: 'Treatment', controller: treatmentController),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextFieldWidget(
+                    label: 'Medicine', controller: medicineController),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextFieldWidget(
+                    inputType: TextInputType.number,
+                    label: 'Price',
+                    controller: priceController),
+              ],
+            ),
           ),
           actions: [
             TextButton(
@@ -207,6 +243,13 @@ class _TableTabState extends State<TableTab> {
                     TextBold(text: 'Close', fontSize: 14, color: Colors.white)),
             TextButton(
                 onPressed: () {
+                  addMedicalRecord(
+                      widget.data['name'],
+                      diseaseController.text,
+                      treatmentController.text,
+                      medicineController.text,
+                      priceController.text,
+                      widget.data.id);
                   Navigator.pop(context);
                 },
                 child:

@@ -155,7 +155,9 @@ class _PetRecordTabState extends State<PetRecordTab> {
                       label: 'Records',
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const TableTab()));
+                            builder: (context) => TableTab(
+                                  data: widget.data,
+                                )));
                       }),
                 ),
               ),
