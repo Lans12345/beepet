@@ -1,13 +1,30 @@
 import 'package:beepet/utils/colors.dart';
 import 'package:beepet/widgets/text_widget.dart';
+import 'package:beepet/widgets/textfield_widget.dart';
 import 'package:flutter/material.dart';
 
-class TableTab extends StatelessWidget {
+class TableTab extends StatefulWidget {
   const TableTab({super.key});
 
   @override
+  State<TableTab> createState() => _TableTabState();
+}
+
+class _TableTabState extends State<TableTab> {
+  final diseaseController = TextEditingController();
+  final treatmentController = TextEditingController();
+  final medicineController = TextEditingController();
+  final priceController = TextEditingController();
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: solid,
+        onPressed: () {
+          addRecord(context);
+        },
+        child: const Icon(Icons.add),
+      ),
       body: SafeArea(
         child: Container(
           height: double.infinity,
@@ -87,7 +104,7 @@ class TableTab extends StatelessWidget {
                               ),
                               DataColumn(
                                 label: TextBold(
-                                  text: 'PRIC',
+                                  text: 'Price',
                                   fontSize: 14,
                                   color: Colors.black,
                                 ),
@@ -147,6 +164,56 @@ class TableTab extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  addRecord(context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: primary,
+          title: TextBold(
+              text: 'Adding a pet record', fontSize: 18, color: Colors.white),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFieldWidget(label: 'Disease', controller: diseaseController),
+              const SizedBox(
+                height: 10,
+              ),
+              TextFieldWidget(
+                  label: 'Treatment', controller: treatmentController),
+              const SizedBox(
+                height: 10,
+              ),
+              TextFieldWidget(
+                  label: 'Medicine', controller: medicineController),
+              const SizedBox(
+                height: 10,
+              ),
+              TextFieldWidget(
+                  inputType: TextInputType.number,
+                  label: 'Price',
+                  controller: priceController),
+            ],
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child:
+                    TextBold(text: 'Close', fontSize: 14, color: Colors.white)),
+            TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child:
+                    TextBold(text: 'Save', fontSize: 14, color: Colors.white))
+          ],
+        );
+      },
     );
   }
 }
