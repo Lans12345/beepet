@@ -90,7 +90,7 @@ class _NotifTabState extends State<NotifTab> {
 
                     final data = snapshot.requireData;
                     return SizedBox(
-                      height: 600,
+                      height: 550,
                       child: ListView.builder(
                         itemCount: data.docs.length,
                         itemBuilder: (context, index) {

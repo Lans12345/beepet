@@ -64,9 +64,6 @@ class _MyPetsTabState extends State<MyPetsTab> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 20,
-              ),
               StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
                       .collection('Pets')
@@ -90,7 +87,7 @@ class _MyPetsTabState extends State<MyPetsTab> {
 
                     final data = snapshot.requireData;
                     return SizedBox(
-                      height: 600,
+                      height: 550,
                       child: ListView.builder(
                         itemCount: data.docs.length,
                         itemBuilder: (context, index) {

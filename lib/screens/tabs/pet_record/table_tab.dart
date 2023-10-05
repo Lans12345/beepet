@@ -135,7 +135,7 @@ class TableTab extends StatelessWidget {
                 ],
               ),
               const SizedBox(
-                height: 40,
+                height: 20,
               ),
               const Expanded(child: SizedBox()),
               Container(
