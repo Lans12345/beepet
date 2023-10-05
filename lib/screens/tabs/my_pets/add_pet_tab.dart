@@ -56,7 +56,9 @@ class AddPetProfileTab extends StatelessWidget {
                                   text: 'BeePet',
                                   fontSize: 24,
                                   color: Colors.white),
-                              const SizedBox(),
+                              const SizedBox(
+                                width: 50,
+                              ),
                             ],
                           ),
                         ),
