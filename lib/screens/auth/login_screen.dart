@@ -133,6 +133,9 @@ class LoginScreen extends StatelessWidget {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => SignupScreen()));
                         })),
+                const SizedBox(
+                  height: 20,
+                ),
               ],
             ),
           ),
