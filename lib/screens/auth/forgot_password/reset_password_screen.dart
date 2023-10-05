@@ -71,6 +71,7 @@ class ResetPasswordScreen extends StatelessWidget {
               ),
               Center(
                   child: TextFieldWidget(
+                      isObscure: true,
                       labelColor: Colors.black,
                       label: 'Enter Password',
                       controller: passwordController)),
@@ -79,6 +80,7 @@ class ResetPasswordScreen extends StatelessWidget {
               ),
               Center(
                   child: TextFieldWidget(
+                      isObscure: true,
                       labelColor: Colors.black,
                       label: 'Confirm Password',
                       controller: confirmpasswordController)),

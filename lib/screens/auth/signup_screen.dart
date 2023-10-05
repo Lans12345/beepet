@@ -51,7 +51,9 @@ class SignupScreen extends StatelessWidget {
                 ),
                 Center(
                   child: TextFieldWidget(
-                      label: 'Password', controller: passwordController),
+                      isObscure: true,
+                      label: 'Password',
+                      controller: passwordController),
                 ),
                 const SizedBox(
                   height: 20,
