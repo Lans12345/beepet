@@ -1,3 +1,4 @@
+import 'package:beepet/admin/admin_home.dart';
 import 'package:beepet/screens/auth/forgot_password/forgot_password_screen.dart';
 import 'package:beepet/screens/auth/signup_screen.dart';
 import 'package:beepet/screens/home_screen.dart';
@@ -13,6 +14,7 @@ import '../../widgets/toast_widget.dart';
 class LoginScreen extends StatelessWidget {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+  final passController = TextEditingController();
 
   LoginScreen({super.key});
 
@@ -133,6 +135,61 @@ class LoginScreen extends StatelessWidget {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => SignupScreen()));
                         })),
+                const SizedBox(
+                  height: 20,
+                ),
+                Center(
+                  child: TextButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            backgroundColor: secondary,
+                            title: TextBold(
+                              color: Colors.black,
+                              text: 'Enter Admin Password',
+                              fontSize: 18,
+                            ),
+                            content: SizedBox(
+                              height: 100,
+                              child: TextFieldWidget(
+                                  labelColor: Colors.black,
+                                  label: 'Password',
+                                  isObscure: true,
+                                  controller: passController),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  if (passController.text != 'password123') {
+                                    Navigator.pop(context);
+                                    showToast('Incorrect admin password!');
+                                  } else {
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AdminScreen()));
+                                  }
+                                },
+                                child: TextRegular(
+                                  text: 'Continue',
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: TextBold(
+                      text: 'Continue as Admin',
+                      fontSize: 14,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
                 const SizedBox(
                   height: 20,
                 ),
