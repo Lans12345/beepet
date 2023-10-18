@@ -44,6 +44,7 @@ dependencies:
   intl:
   qr_flutter:
   flutter_barcode_scanner:
+  image_picker:
 
 dev_dependencies:
   flutter_test:

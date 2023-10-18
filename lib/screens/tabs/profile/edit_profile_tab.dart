@@ -1,10 +1,16 @@
+import 'dart:io';
+
 import 'package:beepet/utils/colors.dart';
 import 'package:beepet/widgets/button_widget.dart';
 import 'package:beepet/widgets/text_widget.dart';
 import 'package:beepet/widgets/textfield_widget.dart';
 import 'package:beepet/widgets/toast_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as path;
 
 class EditProfileTab extends StatefulWidget {
   String? id;
@@ -24,6 +30,79 @@ class _EditProfileTabState extends State<EditProfileTab> {
   final contactController = TextEditingController();
 
   final addressController = TextEditingController();
+
+  late String fileName = '';
+
+  late File imageFile;
+
+  late String imageURL = '';
+
+  Future<void> uploadPicture(String inputSource) async {
+    final picker = ImagePicker();
+    XFile pickedImage;
+    try {
+      pickedImage = (await picker.pickImage(
+          source: inputSource == 'camera'
+              ? ImageSource.camera
+              : ImageSource.gallery,
+          maxWidth: 1920))!;
+
+      fileName = path.basename(pickedImage.path);
+      imageFile = File(pickedImage.path);
+
+      try {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) => const Padding(
+            padding: EdgeInsets.only(left: 30, right: 30),
+            child: AlertDialog(
+                title: Row(
+              children: [
+                CircularProgressIndicator(
+                  color: Colors.black,
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  'Loading . . .',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'QRegular'),
+                ),
+              ],
+            )),
+          ),
+        );
+
+        await firebase_storage.FirebaseStorage.instance
+            .ref('Users/$fileName')
+            .putFile(imageFile);
+        imageURL = await firebase_storage.FirebaseStorage.instance
+            .ref('Users/$fileName')
+            .getDownloadURL();
+
+        await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(widget.id)
+            .update({'profile': imageURL});
+
+        Navigator.of(context).pop();
+
+        showToast('Image profile updated!');
+      } on firebase_storage.FirebaseException catch (error) {
+        if (kDebugMode) {
+          print(error);
+        }
+      }
+    } catch (err) {
+      if (kDebugMode) {
+        print(err);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +180,7 @@ class _EditProfileTabState extends State<EditProfileTab> {
                                             children: [
                                               ListTile(
                                                 onTap: () {
-                                                  Navigator.pop(context);
+                                                  uploadPicture('camera');
                                                 },
                                                 leading:
                                                     const Icon(Icons.camera),
@@ -113,7 +192,7 @@ class _EditProfileTabState extends State<EditProfileTab> {
                                               const Divider(),
                                               ListTile(
                                                 onTap: () {
-                                                  Navigator.pop(context);
+                                                  uploadPicture('gallery');
                                                 },
                                                 leading:
                                                     const Icon(Icons.image),

@@ -114,11 +114,11 @@ class _ProfileTabState extends State<ProfileTab> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const CircleAvatar(
+                                  CircleAvatar(
                                     minRadius: 35,
                                     maxRadius: 35,
-                                    backgroundImage: NetworkImage(
-                                        'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'),
+                                    backgroundImage:
+                                        NetworkImage(data.docs[0]['profile']),
                                   ),
                                   const SizedBox(
                                     height: 20,
