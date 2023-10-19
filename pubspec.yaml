@@ -45,6 +45,9 @@ dependencies:
   qr_flutter:
   flutter_barcode_scanner:
   image_picker:
+  google_maps_flutter:
+  geocoding: ^2.1.0
+  geolocator: ^9.0.2
 
 dev_dependencies:
   flutter_test:
