@@ -2,12 +2,17 @@ import 'package:beepet/screens/auth/verified_screen.dart';
 import 'package:beepet/widgets/button_widget.dart';
 import 'package:beepet/widgets/text_widget.dart';
 import 'package:beepet/widgets/textfield_widget.dart';
+import 'package:beepet/widgets/toast_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class OTPScreen extends StatelessWidget {
   final otpController = TextEditingController();
 
-  OTPScreen({super.key});
+  String num;
+  String verId;
+
+  OTPScreen({super.key, required this.num, required this.verId});
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +59,22 @@ class OTPScreen extends StatelessWidget {
                       radius: 100,
                       color: Colors.teal[600]!.withOpacity(0.5),
                       label: 'Continue',
-                      onPressed: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => VerifiedScreen()));
+                      onPressed: () async {
+                        PhoneAuthCredential credential =
+                            PhoneAuthProvider.credential(
+                                verificationId: verId,
+                                smsCode: otpController.text);
+                        try {
+                          await FirebaseAuth.instance
+                              .signInWithCredential(credential);
+
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => VerifiedScreen()));
+                        } catch (e) {
+                          print(e.toString());
+                          showToast('Invalied OTP Code');
+                        }
                       })),
             ],
           ),

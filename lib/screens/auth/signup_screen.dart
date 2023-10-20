@@ -4,6 +4,8 @@ import 'package:beepet/services/add_user.dart';
 import 'package:beepet/widgets/button_widget.dart';
 import 'package:beepet/widgets/text_widget.dart';
 import 'package:beepet/widgets/textfield_widget.dart';
+import 'package:beepet/widgets/toast_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -60,7 +62,8 @@ class SignupScreen extends StatelessWidget {
                 ),
                 Center(
                     child: TextFieldWidget(
-                        label: 'Phone Number', controller: phoneController)),
+                        label: 'Phone Number (ex. +639639530422)',
+                        controller: phoneController)),
                 const SizedBox(
                   height: 20,
                 ),
@@ -74,15 +77,31 @@ class SignupScreen extends StatelessWidget {
                     child: ButtonWidget(
                         radius: 100,
                         color: Colors.teal[600]!.withOpacity(0.5),
-                        label: 'Signup',
-                        onPressed: () {
-                          box.write('username', usernameController.text);
-                          box.write('password', passwordController.text);
-                          box.write('contactNumber', phoneController.text);
-                          addUser(usernameController.text, phoneController.text,
-                              addressController.text);
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => OTPScreen()));
+                        label: 'Signups',
+                        onPressed: () async {
+                          await FirebaseAuth.instance.verifyPhoneNumber(
+                            phoneNumber: phoneController.text,
+                            verificationCompleted:
+                                (PhoneAuthCredential credential) {},
+                            verificationFailed: (FirebaseAuthException e) {
+                              showToast(e.toString());
+                            },
+                            codeSent:
+                                (String verificationId, int? resendToken) {
+                              box.write('username', usernameController.text);
+                              box.write('password', passwordController.text);
+                              box.write('contactNumber', phoneController.text);
+                              addUser(usernameController.text,
+                                  phoneController.text, addressController.text);
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => OTPScreen(
+                                        num: phoneController.text,
+                                        verId: verificationId,
+                                      )));
+                            },
+                            codeAutoRetrievalTimeout:
+                                (String verificationId) {},
+                          );
                         })),
                 const SizedBox(
                   height: 20,

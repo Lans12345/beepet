@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,27 +17,89 @@ class _TrackPetTabState extends State<TrackPetTab> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    getData();
     determinePosition();
   }
+
+  var hasLoaded = false;
+
+  bool status = false;
+
+  double lat = 0;
+  double long = 0;
+
+  getData() async {
+    FirebaseDatabase.instance
+        .ref('pettracker')
+        .onValue
+        .listen((DatabaseEvent event) async {
+      final dynamic data = event.snapshot.value;
+
+      setState(() {
+        lat = double.parse(data['fcgftrtrtr545']['latitude']);
+        long = double.parse(data['fcgftrtrtr545']['longitude']);
+      });
+
+      print(double.parse(data['fcgftrtrtr545']['latitude']));
+
+      addMarker(
+          double.parse(data['fcgftrtrtr545']['latitude']),
+          double.parse(data['fcgftrtrtr545']['longitude']),
+          data['fcgftrtrtr545']['petname']);
+    });
+
+    setState(() {
+      hasLoaded = true;
+    });
+  }
+
+  Set<Marker> markers = {};
 
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
+  addMarker(lat1, long1, String petname) {
+    setState(() {
+      markers.add(
+        Marker(
+            draggable: true,
+            onDrag: (value) {
+              setState(() {
+                lat = value.latitude;
+                long = value.longitude;
+              });
+            },
+            icon: BitmapDescriptor.defaultMarker,
+            markerId: const MarkerId('pet location'),
+            position: LatLng(lat1, long1),
+            infoWindow: InfoWindow(title: petname)),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    print(lat);
+    print(long);
+    CameraPosition kGooglePlex = CameraPosition(
+      target: LatLng(lat, long),
+      zoom: 14.4746,
+    );
     return Scaffold(
-      body: GoogleMap(
-        mapType: MapType.hybrid,
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-      ),
+      body: hasLoaded && lat != 0.0
+          ? GoogleMap(
+              markers: markers,
+              myLocationEnabled: true,
+              mapType: MapType.normal,
+              initialCameraPosition: kGooglePlex,
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
+            )
+          : const Center(
+              child: CircularProgressIndicator(),
+            ),
     );
   }
 
