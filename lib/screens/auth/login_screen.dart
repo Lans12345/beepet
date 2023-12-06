@@ -82,6 +82,13 @@ class LoginScreen extends StatelessWidget {
                         color: solid,
                         label: 'Login',
                         onPressed: () {
+                          // box.write('username', usernameController.text);
+                          // box.write('password', passwordController.text);
+                          // box.write('contactNumber', '123');
+                          // addUser(usernameController.text, '123', '123');
+                          // Navigator.of(context).pushReplacement(
+                          //     MaterialPageRoute(
+                          //         builder: (context) => const HomeScreen()));
                           if (usernameController.text == box.read('username') &&
                               passwordController.text == box.read('password')) {
                             showToast('Logged in succesfully!');

@@ -5,6 +5,7 @@ import 'package:beepet/widgets/text_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
@@ -172,6 +173,75 @@ class _ProfileTabState extends State<ProfileTab> {
                             }),
                       ),
                     ),
+                    StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection('Users')
+                            .where('username', isEqualTo: box.read('username'))
+                            .snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasError) {
+                            print('error');
+                            return const Center(child: Text('Error'));
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Padding(
+                              padding: EdgeInsets.only(top: 50),
+                              child: Center(
+                                  child: CircularProgressIndicator(
+                                color: Colors.black,
+                              )),
+                            );
+                          }
+
+                          final data = snapshot.requireData;
+                          return Padding(
+                            padding:
+                                const EdgeInsets.only(bottom: 20, right: 20),
+                            child: Align(
+                              alignment: Alignment.topRight,
+                              child: ButtonWidget(
+                                  fontSize: 16,
+                                  fontColor: solid,
+                                  width: 100,
+                                  height: 35,
+                                  color: Colors.white,
+                                  label: 'View QR Code',
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: ((context) {
+                                          return AlertDialog(
+                                            title: TextBold(
+                                                text: 'Your QR Code',
+                                                fontSize: 18,
+                                                color: Colors.black),
+                                            content: SizedBox(
+                                              height: 300,
+                                              width: 300,
+                                              child: QrImageView(
+                                                data: data.docs[0].id,
+                                                version: QrVersions.auto,
+                                                size: 200.0,
+                                              ),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: (() {
+                                                    Navigator.pop(context);
+                                                  }),
+                                                  child: TextBold(
+                                                      text: 'Close',
+                                                      fontSize: 14,
+                                                      color: Colors.black)),
+                                            ],
+                                          );
+                                        }));
+                                  }),
+                            ),
+                          );
+                        }),
                     const Expanded(child: SizedBox()),
                     Container(
                       color: primary,
