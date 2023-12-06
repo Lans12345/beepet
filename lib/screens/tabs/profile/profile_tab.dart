@@ -161,55 +161,8 @@ class _ProfileTabState extends State<ProfileTab> {
                     const SizedBox(
                       height: 40,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 20, right: 20),
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: ButtonWidget(
-                            fontSize: 16,
-                            fontColor: solid,
-                            width: 100,
-                            height: 35,
-                            color: Colors.white,
-                            label: 'EDIT',
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => EditProfileTab(
-                                        id: data.docs[0].id,
-                                      )));
-                            }),
-                      ),
-                    ),
-                    StreamBuilder<QuerySnapshot>(
-                        stream: widget.username != ''
-                            ? FirebaseFirestore.instance
-                                .collection('Users')
-                                .where('username', isEqualTo: widget.username)
-                                .snapshots()
-                            : FirebaseFirestore.instance
-                                .collection('Users')
-                                .where('username',
-                                    isEqualTo: box.read('username'))
-                                .snapshots(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<QuerySnapshot> snapshot) {
-                          if (snapshot.hasError) {
-                            print('error');
-                            return const Center(child: Text('Error'));
-                          }
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Padding(
-                              padding: EdgeInsets.only(top: 50),
-                              child: Center(
-                                  child: CircularProgressIndicator(
-                                color: Colors.black,
-                              )),
-                            );
-                          }
-
-                          final data = snapshot.requireData;
-                          return Padding(
+                    widget.username == ''
+                        ? Padding(
                             padding:
                                 const EdgeInsets.only(bottom: 20, right: 20),
                             child: Align(
@@ -220,41 +173,96 @@ class _ProfileTabState extends State<ProfileTab> {
                                   width: 100,
                                   height: 35,
                                   color: Colors.white,
-                                  label: 'View QR Code',
+                                  label: 'EDIT',
                                   onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: ((context) {
-                                          return AlertDialog(
-                                            title: TextBold(
-                                                text: 'Your QR Code',
-                                                fontSize: 18,
-                                                color: Colors.black),
-                                            content: SizedBox(
-                                              height: 300,
-                                              width: 300,
-                                              child: QrImageView(
-                                                data: data.docs[0].id,
-                                                version: QrVersions.auto,
-                                                size: 200.0,
-                                              ),
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                  onPressed: (() {
-                                                    Navigator.pop(context);
-                                                  }),
-                                                  child: TextBold(
-                                                      text: 'Close',
-                                                      fontSize: 14,
-                                                      color: Colors.black)),
-                                            ],
-                                          );
-                                        }));
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditProfileTab(
+                                                  id: data.docs[0].id,
+                                                )));
                                   }),
                             ),
-                          );
-                        }),
+                          )
+                        : const SizedBox(),
+                    widget.username == ''
+                        ? StreamBuilder<QuerySnapshot>(
+                            stream: widget.username != ''
+                                ? FirebaseFirestore.instance
+                                    .collection('Users')
+                                    .where('username',
+                                        isEqualTo: widget.username)
+                                    .snapshots()
+                                : FirebaseFirestore.instance
+                                    .collection('Users')
+                                    .where('username',
+                                        isEqualTo: box.read('username'))
+                                    .snapshots(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (snapshot.hasError) {
+                                print('error');
+                                return const Center(child: Text('Error'));
+                              }
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Padding(
+                                  padding: EdgeInsets.only(top: 50),
+                                  child: Center(
+                                      child: CircularProgressIndicator(
+                                    color: Colors.black,
+                                  )),
+                                );
+                              }
+
+                              final data = snapshot.requireData;
+                              return Padding(
+                                padding: const EdgeInsets.only(
+                                    bottom: 20, right: 20),
+                                child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: ButtonWidget(
+                                      fontSize: 16,
+                                      fontColor: solid,
+                                      width: 100,
+                                      height: 35,
+                                      color: Colors.white,
+                                      label: 'View QR Code',
+                                      onPressed: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: ((context) {
+                                              return AlertDialog(
+                                                title: TextBold(
+                                                    text: 'Your QR Code',
+                                                    fontSize: 18,
+                                                    color: Colors.black),
+                                                content: SizedBox(
+                                                  height: 300,
+                                                  width: 300,
+                                                  child: QrImageView(
+                                                    data: data.docs[0].id,
+                                                    version: QrVersions.auto,
+                                                    size: 200.0,
+                                                  ),
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                      onPressed: (() {
+                                                        Navigator.pop(context);
+                                                      }),
+                                                      child: TextBold(
+                                                          text: 'Close',
+                                                          fontSize: 14,
+                                                          color: Colors.black)),
+                                                ],
+                                              );
+                                            }));
+                                      }),
+                                ),
+                              );
+                            })
+                        : const SizedBox(),
                     const Expanded(child: SizedBox()),
                     Container(
                       color: primary,
