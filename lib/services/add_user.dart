@@ -8,7 +8,8 @@ Future addUser(username, contactNumber, address) async {
     'contactNumber': contactNumber,
     'dateTime': DateTime.now(),
     'address': address,
-    'profile': ''
+    'profile': '',
+    'uid': docUser.id
   };
 
   await docUser.set(json);

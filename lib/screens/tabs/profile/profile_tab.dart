@@ -8,7 +8,9 @@ import 'package:get_storage/get_storage.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class ProfileTab extends StatefulWidget {
-  const ProfileTab({super.key});
+  String? username;
+
+  ProfileTab({super.key, this.username = ''});
 
   @override
   State<ProfileTab> createState() => _ProfileTabState();
@@ -30,10 +32,15 @@ class _ProfileTabState extends State<ProfileTab> {
                 fit: BoxFit.cover),
           ),
           child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('Users')
-                  .where('username', isEqualTo: box.read('username'))
-                  .snapshots(),
+              stream: widget.username != ''
+                  ? FirebaseFirestore.instance
+                      .collection('Users')
+                      .where('username', isEqualTo: widget.username)
+                      .snapshots()
+                  : FirebaseFirestore.instance
+                      .collection('Users')
+                      .where('username', isEqualTo: box.read('username'))
+                      .snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
@@ -174,10 +181,16 @@ class _ProfileTabState extends State<ProfileTab> {
                       ),
                     ),
                     StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance
-                            .collection('Users')
-                            .where('username', isEqualTo: box.read('username'))
-                            .snapshots(),
+                        stream: widget.username != ''
+                            ? FirebaseFirestore.instance
+                                .collection('Users')
+                                .where('username', isEqualTo: widget.username)
+                                .snapshots()
+                            : FirebaseFirestore.instance
+                                .collection('Users')
+                                .where('username',
+                                    isEqualTo: box.read('username'))
+                                .snapshots(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> snapshot) {
                           if (snapshot.hasError) {

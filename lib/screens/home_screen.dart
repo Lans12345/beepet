@@ -9,8 +9,9 @@ import 'package:beepet/widgets/home_cards_widget.dart';
 import 'package:beepet/widgets/text_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 import '../widgets/toast_widget.dart';
 import 'auth/login_screen.dart';
@@ -24,6 +25,37 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final box = GetStorage();
+  String qrCode = 'Unknown';
+
+  Future<void> scanQRCode() async {
+    try {
+      final qrCode = await FlutterBarcodeScanner.scanBarcode(
+        '#ff6666',
+        'Cancel',
+        true,
+        ScanMode.QR,
+      );
+
+      if (!mounted) return;
+
+      setState(() {
+        this.qrCode = qrCode;
+      });
+
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .where('uid', isEqualTo: qrCode)
+          .get()
+          .then((QuerySnapshot querySnapshot) async {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ProfileTab(
+                  username: querySnapshot.docs.first['username'],
+                )));
+      });
+    } on PlatformException {
+      qrCode = 'Failed to get platform version.';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +108,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       HomeCardWidget(
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const ProfileTab()));
+                                builder: (context) => ProfileTab(
+                                      username: box.read('username'),
+                                    )));
                           },
                           icon: Icons.account_circle,
                           title: 'Profile'),
@@ -87,65 +121,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                           icon: Icons.pets,
                           title: 'My Pets'),
-                      StreamBuilder<QuerySnapshot>(
-                          stream: FirebaseFirestore.instance
-                              .collection('Users')
-                              .where('username',
-                                  isEqualTo: box.read('username'))
-                              .snapshots(),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<QuerySnapshot> snapshot) {
-                            if (snapshot.hasError) {
-                              print('error');
-                              return const Center(child: Text('Error'));
-                            }
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Padding(
-                                padding: EdgeInsets.only(top: 50),
-                                child: Center(
-                                    child: CircularProgressIndicator(
-                                  color: Colors.black,
-                                )),
-                              );
-                            }
-
-                            final data = snapshot.requireData;
-                            return HomeCardWidget(
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: ((context) {
-                                        return AlertDialog(
-                                          title: TextBold(
-                                              text: 'Your QR Code',
-                                              fontSize: 18,
-                                              color: Colors.black),
-                                          content: SizedBox(
-                                            height: 300,
-                                            width: 300,
-                                            child: QrImageView(
-                                              data: data.docs[0].id,
-                                              version: QrVersions.auto,
-                                              size: 200.0,
-                                            ),
-                                          ),
-                                          actions: [
-                                            TextButton(
-                                                onPressed: (() {
-                                                  Navigator.pop(context);
-                                                }),
-                                                child: TextBold(
-                                                    text: 'Close',
-                                                    fontSize: 14,
-                                                    color: Colors.black)),
-                                          ],
-                                        );
-                                      }));
-                                },
-                                icon: Icons.qr_code_scanner_rounded,
-                                title: 'Scan QR Code');
-                          }),
+                      HomeCardWidget(
+                          onPressed: () {
+                            scanQRCode();
+                          },
+                          icon: Icons.qr_code_scanner_rounded,
+                          title: 'Scan QR Code'),
                       HomeCardWidget(
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
